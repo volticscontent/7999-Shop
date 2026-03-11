@@ -194,7 +194,7 @@ const SuccessNotification = ({ show, onClose }: { show: boolean; onClose: () => 
     if (show) {
       setIsVisible(true)
       setProgress(100)
-      
+
       // Update progress every 100ms for smoother animation
       const progressInterval = setInterval(() => {
         setProgress(prev => {
@@ -205,7 +205,7 @@ const SuccessNotification = ({ show, onClose }: { show: boolean; onClose: () => 
           return prev - 2 // Decrease 2% every 100ms = 5 seconds total
         })
       }, 100)
-      
+
       const timer = setTimeout(() => {
         setIsExiting(true)
         setTimeout(() => {
@@ -229,11 +229,10 @@ const SuccessNotification = ({ show, onClose }: { show: boolean; onClose: () => 
 
   return (
     <div
-      className={`fixed top-4 right-4 z-50 transition-all duration-700 transform ${
-        isVisible && !isExiting 
-          ? "translate-x-0 opacity-100 scale-100" 
-          : "translate-x-full opacity-0 scale-95"
-      }`}
+      className={`fixed top-4 right-4 z-50 transition-all duration-700 transform ${isVisible && !isExiting
+        ? "translate-x-0 opacity-100 scale-100"
+        : "translate-x-full opacity-0 scale-95"
+        }`}
     >
       <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3 border border-green-400 backdrop-blur-sm">
         <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
@@ -243,7 +242,7 @@ const SuccessNotification = ({ show, onClose }: { show: boolean; onClose: () => 
           <p className="font-bold text-lg">Congratulations! 🎉</p>
           <p className="text-sm opacity-90">You've earned a £20 discount!</p>
         </div>
-        <button 
+        <button
           onClick={onClose}
           className="ml-2 text-white hover:text-gray-200 transition-colors duration-200"
           aria-label="Close notification"
@@ -252,7 +251,7 @@ const SuccessNotification = ({ show, onClose }: { show: boolean; onClose: () => 
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <div className="absolute bottom-0 left-0 h-1 bg-green-300 rounded-b-xl" style={{ 
+        <div className="absolute bottom-0 left-0 h-1 bg-green-300 rounded-b-xl" style={{
           width: `${progress}%`,
           transition: 'width 0.1s linear'
         }}></div>
@@ -263,7 +262,7 @@ const SuccessNotification = ({ show, onClose }: { show: boolean; onClose: () => 
 
 // Falling hearts component
 const FallingHeart = ({ delay }: { delay: number }) => (
-  <div 
+  <div
     className={`absolute text-red-500 text-2xl pointer-events-none ${styles.fall}`}
     style={{
       left: `${Math.random() * 100}%`,
@@ -282,7 +281,7 @@ const ChelseaLionIcon = () => (
     className="w-8 h-8"
     fill="currentColor"
   >
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
   </svg>
 );
 
@@ -292,10 +291,10 @@ const ChelseaLionIcon = () => (
 const LoadingSpinner = ({ size = "md" }: { size?: "sm" | "md" | "lg" }) => {
   const sizeClasses = {
     sm: "w-4 h-4",
-    md: "w-6 h-6", 
+    md: "w-6 h-6",
     lg: "w-8 h-8"
   }
-  
+
   return (
     <div className={`${sizeClasses[size]} animate-spin rounded-full border-2 border-[#f00] border-t-white`}></div>
   )
@@ -322,24 +321,22 @@ const ImageCarousel = () => {
             src={image}
             alt={`WWE SummerSlam Image ${index + 1}`}
             fill
-            className={`object-cover transition-opacity duration-1000 ${
-              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`object-cover transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+              }`}
             style={{ borderRadius: '25px' }}
           />
         ))}
       </div>
-      
+
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentImageIndex(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentImageIndex 
-                ? 'bg-white shadow-lg' 
-                : 'bg-white/50 hover:bg-white/75'
-            }`}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentImageIndex
+              ? 'bg-white shadow-lg'
+              : 'bg-white/50 hover:bg-white/75'
+              }`}
           />
         ))}
       </div>
@@ -594,7 +591,7 @@ const USPPanel = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-4">
           <div className="text-xs font-medium uppercase tracking-[0.25em] text-black">WWE SummerSlam</div>
-          <button 
+          <button
             onClick={onClose}
             className="p-2 hover:bg-gray-50 transition-colors duration-150"
             aria-label="Close"
@@ -655,7 +652,7 @@ const USPPanel = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
 // Componente do ícone de coração moderno
 const HeartIcon = ({ isLiked, onClick }: { isLiked: boolean; onClick: () => void }) => {
   const [showBurst, setShowBurst] = useState(false);
-  
+
   const handleClick = () => {
     onClick();
     if (!isLiked) {
@@ -683,7 +680,7 @@ const HeartIcon = ({ isLiked, onClick }: { isLiked: boolean; onClick: () => void
           </div>
         </div>
       )}
-      
+
     </div>
   );
 };
@@ -715,13 +712,13 @@ const CompleteHeader = ({ onUSPClick }: { onUSPClick: () => void }) => {
       </div>
 
       {/* USP Bar */}
-     <div className="w-full bg-[#e7071d] border-b border-gray-200 transition-colors duration-200 py-2 group">
-      <div className="flex items-center justify-center space-x-2 px-4">
-        <div className="text-sm font-medium text-[#ffffff] uppercase tracking-wide">
-Take the perfume quiz and get up to £120 off
+      <div className="w-full bg-[#e7071d] border-b border-gray-200 transition-colors duration-200 py-2 group">
+        <div className="flex items-center justify-center space-x-2 px-4">
+          <div className="text-sm font-medium text-[#ffffff] uppercase tracking-wide">
+            Take the perfume quiz and get up to £120 off
+          </div>
         </div>
       </div>
-     </div>
     </header>
   );
 };
@@ -745,7 +742,7 @@ export default function WWESummerSlamQuiz() {
     const styleElement = document.createElement("style");
     styleElement.innerHTML = progressBarStyles;
     document.head.appendChild(styleElement);
-    
+
     return () => {
       document.head.removeChild(styleElement);
     };
@@ -789,7 +786,7 @@ export default function WWESummerSlamQuiz() {
   // Reset progress quando mudar de pergunta
   useEffect(() => {
     setProgressValue(100);
-    
+
     // Rastrear visualização da pergunta quando gameStarted está true
     if (gameStarted && !quizCompleted) {
       trackQuizStep('question_viewed', currentQuestion + 1);
@@ -820,7 +817,7 @@ export default function WWESummerSlamQuiz() {
   const handleStartQuiz = () => {
     setIsLoading(true)
     trackQuizStep('quiz_start'); // Rastrear início do quiz
-    
+
     // Simular um pequeno delay para melhor UX
     setTimeout(() => {
       setGameStarted(true)
@@ -833,20 +830,20 @@ export default function WWESummerSlamQuiz() {
   // Função para lidar com o clique no botão de compra
   const handleBuyNowClick = (selectedKit: string) => {
     trackQuizStep('go_to_store'); // Evento final - ir para a loja
-    
+
     // Adicionar item ao carrinho
     addItem({
       id: 999, // ID especial para o kit do quiz
       handle: 'luxury-perfumes-kit',
       title: '3 Luxury Perfumes – Exclusive Online Kit',
       subtitle: 'Premium Collection',
-      price: 49.99,
+      price: 69.99,
       image: '/3-caixas.png'
     });
-    
+
     // Garantir que o carrinho esteja fechado para não atrapalhar a navegação
     setIsOpen(false);
-    
+
     // Redirecionar para a loja
     router.push('/');
   }
@@ -854,25 +851,25 @@ export default function WWESummerSlamQuiz() {
   // Modificar a função de resposta com loading e scroll automático
   const handleAnswer = () => {
     if (isSubmitting) return
-    
+
     // Verificar se temos uma pergunta válida
     if (currentQuestion < 0 || currentQuestion >= questions.length) {
       console.error('Current question index out of bounds:', currentQuestion, 'Total questions:', questions.length);
       return;
     }
-    
+
     const currentQuestionData = questions[currentQuestion];
     if (!currentQuestionData) {
       console.error('Pergunta atual não encontrada');
       return;
     }
-    
+
     // Verificar se uma resposta foi selecionada
     if (selectedAnswer === '' || selectedAnswer === null) {
       console.warn('No answer selected, skipping...');
       return;
     }
-    
+
     setIsSubmitting(true)
     const isCorrect = Number.parseInt(selectedAnswer) === currentQuestionData.correct
     const questionNumber = currentQuestion + 1
@@ -886,7 +883,7 @@ export default function WWESummerSlamQuiz() {
 
     // Tracking de eventos - rastrear cada pergunta
     trackQuizStep('question_answered', questionNumber, isCorrect);
-    
+
     // Sempre mostrar a notificação
     setShowNotification(true);
     playSound();
@@ -911,7 +908,7 @@ export default function WWESummerSlamQuiz() {
   // Modificar nextQuestion com loading
   const nextQuestion = () => {
     setIsLoading(true)
-    
+
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion((prev) => prev + 1)
@@ -938,7 +935,7 @@ export default function WWESummerSlamQuiz() {
 
   const discount = correctAnswers * 20
   const originalPrice = 170.00
-  const finalPrice = Math.max(originalPrice - discount, 49.99)
+  const finalPrice = Math.max(originalPrice - discount, 69.99)
 
   useTrackVSLView(); // Comentado junto com o VSL
 
@@ -961,7 +958,7 @@ export default function WWESummerSlamQuiz() {
               <div className="text-center mb-10 animate-fadeIn">
                 <h1 className="text-4xl font-normal font-product-sans text-gray-900">Message from The Perfume Shop CEO</h1>
               </div>
-              
+
               <div className="space-y-14">
                 <div className="animate-scaleIn">
                   {/* <VideoPlayer isReady={true} /> */}
@@ -1015,7 +1012,7 @@ export default function WWESummerSlamQuiz() {
               <div className="flex flex-col gap-4">
                 {/* Discount progress bar */}
                 <DiscountProgressBar correctAnswers={correctAnswers} />
-                
+
               </div>
             </div>
           </div>
@@ -1038,9 +1035,8 @@ export default function WWESummerSlamQuiz() {
               <div className="flex justify-center mb-6">
                 <div className="text-center">
                   <p className="text-sm text-gray-600">Your discount</p>
-                  <p className={`text-2xl font-bold text-[#1bca32] transform transition-all duration-500 ${
-                    correctAnswers > 0 ? 'scale-125 animate-pulse' : ''
-                  }`}>
+                  <p className={`text-2xl font-bold text-[#1bca32] transform transition-all duration-500 ${correctAnswers > 0 ? 'scale-125 animate-pulse' : ''
+                    }`}>
                     £{correctAnswers * 20}
                   </p>
                   <p className="text-xs text-gray-500">Participation reward</p>
@@ -1066,11 +1062,10 @@ export default function WWESummerSlamQuiz() {
                       {questions[currentQuestion].options.map((option: string, index: number) => (
                         <div
                           key={index}
-                          className={`flex items-center space-x-3 p-4 transition-all duration-200 cursor-pointer bg-white border border-[#f00] ${
-                            selectedAnswer === index.toString() 
-                              ? 'bg-[#e90a0a] shadow-sm transform scale-105' 
-                              : 'bg-black hover:transform hover:scale-105'
-                          }`}
+                          className={`flex items-center space-x-3 p-4 transition-all duration-200 cursor-pointer bg-white border border-[#f00] ${selectedAnswer === index.toString()
+                            ? 'bg-[#e90a0a] shadow-sm transform scale-105'
+                            : 'bg-black hover:transform hover:scale-105'
+                            }`}
                         >
                           <RadioGroupItem value={index.toString()} id={`option-${index}`} />
                           <Label htmlFor={`option-${index}`} className="flex-1 text-black cursor-pointer font-medium">
@@ -1085,11 +1080,10 @@ export default function WWESummerSlamQuiz() {
                 <Button
                   onClick={handleAnswer}
                   disabled={!selectedAnswer || isSubmitting}
-                  className={`w-full py-4 mt-3 text-white transition-all duration-200 transform hover:scale-105 ${
-                    isSubmitting 
-                      ? 'bg-[#f00] cursor-not-allowed' 
-                      : 'bg-[#f00] hover:bg-gray-800 hover:shadow-lg'
-                  }`}
+                  className={`w-full py-4 mt-3 text-white transition-all duration-200 transform hover:scale-105 ${isSubmitting
+                    ? 'bg-[#f00] cursor-not-allowed'
+                    : 'bg-[#f00] hover:bg-gray-800 hover:shadow-lg'
+                    }`}
                   size="lg"
                 >
                   {isSubmitting ? (
@@ -1124,19 +1118,19 @@ const DiscountProgressBar = ({ correctAnswers }: { correctAnswers: number }) => 
       <div className="flex justify-between items-center">
         <span className="text-sm text-gray-600">Discount progress:</span>
         <div>
-        <span className="font-semibold">£{discount} /</span>
-        <span className="font-semibold text-red-600">£{maxDiscount}</span>
+          <span className="font-semibold">£{discount} /</span>
+          <span className="font-semibold text-red-600">£{maxDiscount}</span>
         </div>
       </div>
-      <div 
-        aria-valuemax={100} 
-        aria-valuemin={0} 
+      <div
+        aria-valuemax={100}
+        aria-valuemin={0}
         aria-valuenow={progressPercentage}
-        role="progressbar" 
+        role="progressbar"
         className="relative h-4 w-full overflow-hidden rounded-full bg-gray-200 mt-2"
       >
-        <div 
-          className="discount-progress-bar h-full transition-all duration-500 ease-out" 
+        <div
+          className="discount-progress-bar h-full transition-all duration-500 ease-out"
           style={{ width: `${progressPercentage}%` }}
         />
       </div>

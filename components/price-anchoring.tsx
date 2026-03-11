@@ -21,13 +21,13 @@ const kits: Kit[] = [
     id: "luxury-perfumes",
     name: "3 Luxury Perfumes – Exclusive Online Kit",
     wrestler: "Premium",
-    price: 49.99,
+    price: 69.99,
     originalPrice: 170.00,
     savings: 120.01,
     description: "3 Premium Fragrance Collection",
     items: [
       "Elegant Rose & Bergamot (50ml)",
-      "Mysterious Oud & Vanilla (50ml)", 
+      "Mysterious Oud & Vanilla (50ml)",
       "Fresh Citrus & Cedar (50ml)",
       "Premium Gift Box",
       "Exclusive Online Access",
@@ -51,7 +51,7 @@ export default function PriceAnchoring({ correctAnswers, onBuyClick }: PriceAnch
   const [selectedKit, setSelectedKit] = useState<string>("luxury-perfumes")
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [carouselOffset, setCarouselOffset] = useState(0)
-  
+
   const selectedKitData = kits.find(kit => kit.id === selectedKit) || kits[0]
   const discount = correctAnswers * 20
   const finalPrice = selectedKitData.price // Use the kit's specific price
@@ -59,11 +59,11 @@ export default function PriceAnchoring({ correctAnswers, onBuyClick }: PriceAnch
   // Auto-rotate images
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => 
+      setCurrentImageIndex((prev) =>
         (prev + 1) % selectedKitData.images.length
       )
     }, 3000)
-    
+
     return () => clearInterval(interval)
   }, [selectedKitData.images.length])
 
@@ -88,7 +88,7 @@ export default function PriceAnchoring({ correctAnswers, onBuyClick }: PriceAnch
         return newOffset
       })
     }, 20) // Update every 20ms for smooth animation
-    
+
     return () => clearInterval(interval)
   }, [])
 
@@ -99,7 +99,7 @@ export default function PriceAnchoring({ correctAnswers, onBuyClick }: PriceAnch
 
 
 
-      
+
       {/* New Temu-style Layout */}
       <div className="flex items-center bg-white justify-between mb-4">
         <div className="w-20 h-20 overflow-hidden border border-red-600">
@@ -125,21 +125,21 @@ export default function PriceAnchoring({ correctAnswers, onBuyClick }: PriceAnch
         </div>
       </div>
 
-              <div className="border-t-2 border-[#f00] pt-6">
-          <h3 className="text-center text-[#2c2c2c] text-2xl font-bold font-sans mb-2">Perfumes we still have in stock:</h3>
-        
+      <div className="border-t-2 border-[#f00] pt-6">
+        <h3 className="text-center text-[#2c2c2c] text-2xl font-bold font-sans mb-2">Perfumes we still have in stock:</h3>
+
         <div className="w-full overflow-hidden bg-white">
           <div className="relative">
-            <div 
-              className="flex transition-none" 
+            <div
+              className="flex transition-none"
               style={{
                 transform: `translateX(${carouselOffset}px)`,
                 width: '7656px' // Adjusted for 11 images: 11 * 232px * 3 cycles = 7656px
               }}
             >
               {/* Create infinite loop by repeating the pattern multiple times */}
-              {Array.from({ length: 3 }, (_, cycleIndex) => 
-                [1,2,3,4,5,6,7,8,9,10,11].map((item, index) => (
+              {Array.from({ length: 3 }, (_, cycleIndex) =>
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((item, index) => (
                   <div key={`${cycleIndex}-${index}`} className="flex-shrink-0 mr-8">
                     <div className="w-[200px] h-[200px] md:w-[200px] md:h-[200px] sm:w-[150px] sm:h-[150px]">
                       <Image
@@ -162,7 +162,7 @@ export default function PriceAnchoring({ correctAnswers, onBuyClick }: PriceAnch
 
       {/* Price Breakdown */}
       <div className="space-y-4 mb-8">
-        
+
         {/* Buy Now Button */}
         {onBuyClick && (
           <div className="mt-6">

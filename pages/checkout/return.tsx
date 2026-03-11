@@ -4,6 +4,7 @@ import { useCart } from '@/contexts/CartContext';
 import Head from 'next/head';
 import { usePixel } from '@/hooks/usePixel';
 import { sendClientSideConversionToUtmfy, retryFailedUtmfyConversions } from '@/lib/clientSideUtmfy';
+import Image from 'next/image';
 
 export default function CheckoutReturn() {
   const router = useRouter();
@@ -86,18 +87,35 @@ export default function CheckoutReturn() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
             </svg>
           </div>
+          <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6">
+            {customerEmail && (
+              <img
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(customerEmail)}&background=10B981&color=fff&rounded=true&size=64`}
+                alt="Avatar do Cliente"
+                className="w-16 h-16 rounded-full shadow-sm"
+              />
+            )}
+          </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
             Thank you for your order!
           </h1>
           <p className="text-gray-600 mb-8">
             A confirmation email has been sent to {customerEmail}.
           </p>
-          <a
-            href="/"
-            className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors inline-block"
-          >
-            Continue Shopping
-          </a>
+          <div className="flex justify-center flex-col col-span-2 gap-4">
+            <a
+              href="/"
+              className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors inline-block"
+            >
+              Continue Shopping
+            </a>
+            <a
+              href="/"
+              className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors inline-block"
+            >
+              Open Mail
+            </a>
+          </div>
         </div>
       </div>
     )

@@ -28,20 +28,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let event: Stripe.Event;
 
   try {
-    if (isTestMode) {
-      // Modo de teste: aceita o evento diretamente sem validação de assinatura
-      event = JSON.parse(buf.toString());
-      console.log('🧪 Modo de teste ativado - pulando validação de assinatura');
-    } else {
-      // Verifica a assinatura do webhook
-      if (!webhookSecret) {
-        throw new Error('Webhook secret não configurado');
-      }
+    // Tenta construir o evento do Stripe (padrão)
+    if (webhookSecret) {
       event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
+    } else {
+      // Fallback para desenvolvimento local sem CLI
+      console.log('⚠️ Processando sem assinatura (Webhook Secret ausente)');
+      event = JSON.parse(buf.toString());
     }
   } catch (err: any) {
-    console.error(`Erro na assinatura do webhook: ${err.message}`);
-    return res.status(400).json({ error: `Webhook Error: ${err.message}` });
+    if (isTestMode) {
+      console.log('🧪 Falha na assinatura repassada, forçando JSON manual pelo Test Mode local');
+      event = JSON.parse(buf.toString());
+    } else {
+      console.error(`Erro na assinatura do webhook: ${err.message}`);
+      return res.status(400).json({ error: `Webhook Error: ${err.message}` });
+    }
   }
 
   // Processa os eventos
@@ -49,16 +51,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (event.type) {
       case 'checkout.session.completed':
         const session = event.data.object as Stripe.Checkout.Session;
-        
+
         // Aqui você pode atualizar seu banco de dados, enviar emails, etc.
         console.log('Payment Succeeded:', session);
-        
+
         // Enviar conversão para UTMify via server-side
         try {
           const { formatStripeToUtmfy, sendConversionToUtmfy } = await import('@/utils/utmfy');
           const utmfyData = formatStripeToUtmfy(session);
           const utmfySuccess = await sendConversionToUtmfy(utmfyData);
-          
+
           if (utmfySuccess) {
             console.log('✅ Conversão enviada para UTMify com sucesso (server-side):', session.id);
           } else {
@@ -71,15 +73,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Enviar conversão para Facebook CAPI (Redundância + Deduplicação)
         try {
           const { sendCapiEvent } = await import('@/lib/facebook-capi');
-          
+
           // Extrair dados do cliente
           const customerEmail = session.customer_details?.email || session.customer_email || undefined;
           const customerName = session.customer_details?.name || undefined;
           const customerPhone = session.customer_details?.phone || undefined;
-          
+
           let firstName = undefined;
           let lastName = undefined;
-          
+
           if (customerName) {
             const parts = customerName.split(' ');
             firstName = parts[0];
@@ -91,7 +93,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           // a menos que expandidos explicitamente. Mas podemos tentar usar metadata.
           // Para simplificar, usamos um ID genérico se não tivermos os itens, ou buscamos via API se crítico.
           // Aqui usamos o ID da sessão como EventID para deduplicação com o Client-Side.
-          
+
           // Extrair metadados de rastreamento (FBP, FBC, IP, UA)
           const fbp = session.metadata?.fbp;
           const fbc = session.metadata?.fbc;
@@ -117,26 +119,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } catch (error) {
           console.error('❌ Erro ao processar Facebook CAPI:', error);
         }
-        
+
         console.log('✅ Checkout session completed - client-side tracking ativo');
-        
+
         // Exemplo: Atualizar status do pedido no banco de dados
         // await updateOrderStatus(session.metadata.orderId, 'paid');
-        
+
         break;
-        
+
       case 'payment_intent.succeeded':
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         console.log('PaymentIntent bem-sucedido:', paymentIntent);
         break;
-        
+
       case 'payment_intent.payment_failed':
         const failedPaymentIntent = event.data.object as Stripe.PaymentIntent;
         console.log('PaymentIntent failed:', failedPaymentIntent);
         break;
-        
+
       // Adicione outros eventos conforme necessário
-      
+
       default:
         console.log(`Evento não tratado: ${event.type}`);
     }

@@ -22,6 +22,9 @@ interface ClientSideUtmfyData {
     utm_medium: string | null;
     utm_source: string | null;
     utm_term: string | null;
+    src?: string | null;
+    sck?: string | null;
+    xcod?: string | null;
   };
   commission: {
     totalPriceInCents: number;
@@ -71,6 +74,9 @@ export async function sendClientSideConversionToUtmfy(
         utm_medium: utmParams.utm_medium || null,
         utm_source: utmParams.utm_source || null,
         utm_term: utmParams.utm_term || null,
+        src: utmParams.src || null,
+        sck: utmParams.sck || null,
+        xcod: utmParams.xcod || null,
       },
       commission: {
         totalPriceInCents: totalValueBRL_Cents,

@@ -32,13 +32,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Criar linha de itens para o Stripe usando price_data
     const lineItems = items.map(item => {
-      // Validar preço - Forçar 49.99 para todos os itens conforme regra de negócio (rollback)
-      const price = 49.99;
+      // Validar preço - Forçar 69.99 para todos os itens conforme regra de negócio (rollback)
+      const price = 69.99;
       // const price = Number(item.price);
       // if (isNaN(price) || price <= 0) {
-      //   console.warn(`Preço inválido para o item ${item.title}: ${item.price}. Usando fallback 49.99`);
+      //   console.warn(`Preço inválido para o item ${item.title}: ${item.price}. Usando fallback 69.99`);
       // }
-      const finalPrice = 49.99;
+      const finalPrice = 69.99;
 
       // Extrair número do set do handle
       let setName = 'Set';
@@ -80,6 +80,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       shipping_address_collection: {
         allowed_countries: ['GB'],
       },
+      phone_number_collection: {
+        enabled: true,
+      },
       payment_method_types: ['card'],
       metadata: {
         utm_campaign: utmParams?.utm_campaign || '',
@@ -87,6 +90,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         utm_medium: utmParams?.utm_medium || '',
         utm_content: utmParams?.utm_content || '',
         utm_term: utmParams?.utm_term || '',
+        src: utmParams?.src || '',
+        sck: utmParams?.sck || '',
+        xcod: utmParams?.xcod || '',
         fbp,
         fbc,
         user_agent: userAgent.substring(0, 500), // Stripe tem limite de 500 chars

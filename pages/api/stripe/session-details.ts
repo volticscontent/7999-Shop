@@ -59,10 +59,26 @@ export default async function handler(
         utm_term: session.metadata?.utm_term || null,
       },
       created: session.created,
-      payment_intent_id: typeof session.payment_intent === 'object' 
-        ? session.payment_intent?.id 
+      payment_intent_id: typeof session.payment_intent === 'object'
+        ? session.payment_intent?.id
         : session.payment_intent,
     };
+
+    // Simular o Webhook do Stripe para o Backend Local (CRM)
+    // Isso é necessário porque o Stripe não envia webhooks para o localhost
+    try {
+      await fetch('http://localhost:3000/api/webhooks/stripe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'checkout.session.completed',
+          data: { object: session }
+        })
+      });
+      console.log('✅ Evento de checkout enviado para o CRM Backend local (localhost:3000)');
+    } catch (e: any) {
+      console.warn('⚠️ Não foi possível sincronizar com o CRM (backend-leads) na porta 3000:', e.message);
+    }
 
     console.log('📊 Dados da sessão Stripe recuperados:', {
       session_id: session.id,
@@ -79,9 +95,9 @@ export default async function handler(
 
   } catch (error: any) {
     console.error('❌ Erro ao buscar sessão do Stripe:', error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Failed to retrieve session details',
-      message: error.message 
+      message: error.message
     });
   }
 }

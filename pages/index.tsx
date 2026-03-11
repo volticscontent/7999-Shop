@@ -9,10 +9,10 @@ interface HomeProps {
 
 export default function Home({ products }: HomeProps) {
   return (
-    <BaseCollection 
+    <BaseCollection
       products={products}
-      title="Premium Fragrance Collections | £49.99 Each"
-      description="Shop premium fragrance collections from top brands. All combos £49.99 with fast UK delivery."
+      title="Premium Fragrance Collections | £69.99 Each"
+      description="Shop premium fragrance collections from top brands. All combos £69.99 with fast UK delivery."
     />
   )
 }
@@ -20,7 +20,7 @@ export default function Home({ products }: HomeProps) {
 export const getStaticProps: GetStaticProps = async () => {
   try {
     const allProducts = getAllProducts()
-    
+
     return {
       props: {
         products: allProducts
@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   } catch (error) {
     console.error('Erro ao carregar produtos:', error)
-    
+
     return {
       props: {
         products: []

@@ -22,6 +22,9 @@ export interface UtmfyConversionData {
     utm_medium: string | null;
     utm_source: string | null;
     utm_term: string | null;
+    src?: string | null;
+    sck?: string | null;
+    xcod?: string | null;
   };
   commission: {
     totalPriceInCents: number;
@@ -107,6 +110,9 @@ export function formatStripeToUtmfy(
       utm_medium: session.metadata?.utm_medium || null,
       utm_source: session.metadata?.utm_source || null,
       utm_term: session.metadata?.utm_term || null,
+      src: session.metadata?.src || null,
+      sck: session.metadata?.sck || null,
+      xcod: session.metadata?.xcod || null,
     },
     commission: {
       totalPriceInCents: amountTotalBRL,

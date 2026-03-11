@@ -26,20 +26,20 @@ export default async function handler(
     // Parse items from metadata if available
     const itemsSummary = paymentIntent.metadata?.items_summary || '';
     const lineItems = [];
-    
+
     if (itemsSummary) {
       const items = itemsSummary.split(',');
       for (const itemStr of items) {
         const [id, qtyStr] = itemStr.split(':');
         const quantity = parseInt(qtyStr) || 1;
         // Since we have a fixed price strategy now
-        const price = 4999; // 49.99 GBP
-        
+        const price = 6999; // 69.99 GBP
+
         let productName = 'Unknown Product';
         if (id === 'luxury-perfumes' || id === 'luxury-perfumes-kit' || id === '999') {
           productName = '3 Luxury Perfumes – Exclusive Online Kit';
         } else {
-            productName = `Product ${id}`;
+          productName = `Product ${id}`;
         }
 
         lineItems.push({
@@ -51,13 +51,13 @@ export default async function handler(
         });
       }
     } else {
-        // Fallback if no items in metadata (should not happen if created via our API)
-        lineItems.push({
-            price_id: 'custom_price',
-            product_name: 'Total Purchase',
-            quantity: 1,
-            amount_total: paymentIntent.amount,
-        });
+      // Fallback if no items in metadata (should not happen if created via our API)
+      lineItems.push({
+        price_id: 'custom_price',
+        product_name: 'Total Purchase',
+        quantity: 1,
+        amount_total: paymentIntent.amount,
+      });
     }
 
     // Structure data for Shopify/Frontend
@@ -91,20 +91,20 @@ export default async function handler(
       created: paymentIntent.created,
       payment_intent_id: paymentIntent.id,
     };
-    
+
     // If email is missing in PI, try to find it in latest_charge -> billing_details
     if (!orderData.customer.email && paymentIntent.latest_charge) {
-        try {
-            const chargeId = typeof paymentIntent.latest_charge === 'string' ? paymentIntent.latest_charge : paymentIntent.latest_charge.id;
-            const charge = await stripe.charges.retrieve(chargeId);
-            if (charge.billing_details?.email) {
-                orderData.customer.email = charge.billing_details.email;
-            } else if (charge.receipt_email) {
-                orderData.customer.email = charge.receipt_email;
-            }
-        } catch (e) {
-            console.warn('Could not retrieve charge details for email', e);
+      try {
+        const chargeId = typeof paymentIntent.latest_charge === 'string' ? paymentIntent.latest_charge : paymentIntent.latest_charge.id;
+        const charge = await stripe.charges.retrieve(chargeId);
+        if (charge.billing_details?.email) {
+          orderData.customer.email = charge.billing_details.email;
+        } else if (charge.receipt_email) {
+          orderData.customer.email = charge.receipt_email;
         }
+      } catch (e) {
+        console.warn('Could not retrieve charge details for email', e);
+      }
     }
 
     console.log('📊 Payment Intent details retrieved:', {
@@ -120,9 +120,9 @@ export default async function handler(
 
   } catch (error: any) {
     console.error('❌ Error retrieving Payment Intent:', error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Failed to retrieve payment intent details',
-      message: error.message 
+      message: error.message
     });
   }
 }

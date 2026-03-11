@@ -103,7 +103,7 @@ export default function CheckoutPage() {
                     <title>Empty Basket | Perfumes UK</title>
                 </Head>
                 <HeaderTPS sticky={true} />
-                <div className="flex-grow flex items-center justify-center">
+                <div className="flex-grow flex items-center justify-center py-40">
                     <div className="text-center">
                         <h1 className="text-2xl font-bold text-gray-900 mb-4">
                             Your basket is empty

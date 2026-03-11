@@ -6,6 +6,9 @@ interface UTMParams {
   utm_campaign?: string;
   utm_term?: string;
   utm_content?: string;
+  src?: string;
+  sck?: string;
+  xcod?: string;
 }
 
 interface UTMHook {
@@ -26,7 +29,7 @@ export function useUTM(): UTMHook {
       // Primeiro, tenta carregar UTMs salvos no sessionStorage
       const savedUtms = sessionStorage.getItem('utm_params');
       let utmsFromStorage: UTMParams = {};
-      
+
       if (savedUtms) {
         try {
           utmsFromStorage = JSON.parse(savedUtms);
@@ -34,30 +37,30 @@ export function useUTM(): UTMHook {
           console.warn('Erro ao parsear UTMs do sessionStorage:', error);
         }
       }
-      
+
       // Captura UTMs da URL atual
       const urlParams = new URLSearchParams(window.location.search);
       const newUtmParams: UTMParams = {};
-      
-      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(param => {
+
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'src', 'sck', 'xcod'].forEach(param => {
         const value = urlParams.get(param);
         if (value) {
           newUtmParams[param as keyof UTMParams] = value;
         }
       });
-      
+
       // Se há novos UTMs na URL, eles têm prioridade
       const finalUtmParams = Object.keys(newUtmParams).length > 0 ? newUtmParams : utmsFromStorage;
-      
+
       // Salva os UTMs no sessionStorage se houver algum
       if (Object.keys(finalUtmParams).length > 0) {
         sessionStorage.setItem('utm_params', JSON.stringify(finalUtmParams));
         console.log('🎯 UTMs capturados e salvos:', finalUtmParams);
       }
-      
+
       setUtmParams(finalUtmParams);
     }
-    
+
     setIsLoaded(true);
   }, []);
 
